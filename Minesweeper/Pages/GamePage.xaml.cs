@@ -9,11 +9,14 @@ namespace Minesweeper.Pages
     public partial class GamePage : Page
     {
         #region Attributes
+        public static Button[,] ButtonsArray;
+
         private int numberOfMines;
         private int boardSize;
         private int previousBoardSize = 0;
 
         private Level level;
+        private Game game;
         #endregion
 
         #region Constructor
@@ -30,6 +33,71 @@ namespace Minesweeper.Pages
         private void startGame()
         {
             makeBoard();
+            makeButtonArray();
+            game = new Game(numberOfMines, boardSize);
+            NumberOfMinesText.Text = numberOfMines.ToString();
+            /*foreach (Button button in ButtonsArray)
+            {
+                button.Style = Application.Current.Resources["UnoepenedButtonStyle"] as Style;
+                button.Content = "";
+            }
+            */
+        }
+        #endregion
+
+        #region Fields
+        /*
+         * Creates array of all buttons in grid, so they can be accessed by row and column numbers
+         */
+        private void makeButtonArray()
+        {
+            ButtonsArray = new Button[boardSize, boardSize];
+
+            int row = 0;
+            int column = 0;
+
+            UIElementCollection buttons = BoardGrid.Children;
+            foreach (UIElement element in buttons)
+            {
+                ButtonsArray[row, column] = element as Button;
+                column++;
+                if (column == boardSize) { column = 0; row++; }
+            }
+        }
+
+        /*
+        * Calculates row and column of clicked button
+        */
+        private int[] getPosition(Grid grid)
+        {
+            var point = Mouse.GetPosition(grid);
+
+            int row = 0;
+            int column = 0;
+            double accumulatedHeight = 0.0;
+            double accumulatedWidth = 0.0;
+
+            // Calculate row mouse was over
+            foreach (var rowDefinition in grid.RowDefinitions)
+            {
+                accumulatedHeight += rowDefinition.ActualHeight;
+                if (accumulatedHeight >= point.Y)
+                    break;
+                row++;
+            }
+
+            // Calculate column mouse was over
+            foreach (var columnDefinition in grid.ColumnDefinitions)
+            {
+                accumulatedWidth += columnDefinition.ActualWidth;
+                if (accumulatedWidth >= point.X)
+                    break;
+                column++;
+
+            }
+            int[] position = { row, column };
+
+            return position;
         }
         #endregion
 
@@ -40,8 +108,10 @@ namespace Minesweeper.Pages
         private Button makeButton(int row, int column)
         {
             Button button = new Button();
-            button.PreviewMouseLeftButtonDown += Cell_PreviewMouseLeftButtonDown;
-            button.MouseRightButtonDown += Cell_MouseRightButtonDown;
+            button.PreviewMouseLeftButtonDown += Field_PreviewMouseLeftButtonDown;
+            button.MouseRightButtonDown += Field_MouseRightButtonDown;
+
+            button.Style = Application.Current.Resources["UnopenedButtonStyle"] as Style;
 
             Grid.SetRow(button, row);
             Grid.SetColumn(button, column);
@@ -135,17 +205,30 @@ namespace Minesweeper.Pages
         /*
         * Opening field
         */
-        private void Cell_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Field_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // get position of clicked button
+            int[] position = getPosition(BoardGrid);
+            int row = position[0];
+            int column = position[1];
 
+            // logic for opening fields
+            game.openField(sender as Button, row, column);
         }
 
         /*
          * Mark field
          */
-        private void Cell_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void Field_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // get position of clicked button
+            int[] position = getPosition(BoardGrid);
+            int row = position[0];
+            int column = position[1];
 
+            // logic for marking field
+            game.markField(sender as Button, row, column);
+            NumberOfMinesText.Text = game.getNumberOfMines().ToString();
         }
 
         /*

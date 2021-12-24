@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Minesweeper.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Minesweeper.Logic
 {
@@ -11,6 +14,8 @@ namespace Minesweeper.Logic
         #region Attributes
         private int numberOfMines;
         private int boardSize;
+        private bool isGameOver;
+        private bool isGameWon;
 
         private Field[,] board;
 
@@ -22,6 +27,8 @@ namespace Minesweeper.Logic
         {
             this.numberOfMines = numberOfMines;
             this.boardSize = boardSize;
+            isGameOver = false;
+            isGameWon = false;
 
             createBoard();
         }
@@ -29,35 +36,109 @@ namespace Minesweeper.Logic
 
         #region Getters
         public Field[,] getBoard() { return this.board; }
+
+        public int getNumberOfMines() { return this.numberOfMines; }
         #endregion
 
-        #region Misc
+        #region Fields
         /*
-         * Checks if array is contained in 2d array
+         * Returns number of neighbour mines 
          */
-        private bool isContained(int[,] array, int[] item)
+        public int countNeighbourMines(List<Field> fields)
         {
-            bool isContained = false;
-
-            for (int i = 0; i < array.Length / 2; i++)
+            int neighbourMines = 0;
+            foreach (Field field in fields)
             {
-                if (array[i, 0] == item[0] && array[i, 1] == item[1]) isContained = true;
-            }
+                int x = field.getX();
+                int y = field.getY();
 
-            return isContained;
+                if (board[x, y].getIsMine()) neighbourMines++;
+            }
+            return neighbourMines;
         }
 
         /*
-         * Creates random nubmer in range [0, number-1]
+         * Returns list of neighbour fields
          */
-        private int[] getRandomPosition(int number)
+        public List<Field> getNeighbourFields(int row, int column)
         {
-            int x = random.Next(number);
-            int y = random.Next(number);
+            List<Field> fields = new List<Field>();
 
-            int[] position = { x, y };
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    int fieldRow = row + x;
+                    int fieldColumn = column + y;
 
-            return position;
+                    // if row or column index is out of bounds countinue
+                    if (fieldRow < 0 || fieldRow >= boardSize || fieldColumn < 0 || fieldColumn >= boardSize) continue;
+                    fields.Add(board[fieldRow, fieldColumn]);
+                }
+            }
+
+            return fields;
+        }
+
+        /*
+        *  Open selected field and all neighbour fields that are not mines
+        */
+        public void openField(Button button, int row, int column)
+        {
+            Field field = board[row, column];
+            if (field.getIsOpened()) return;
+            else if (field.getIsMine())
+            {
+                button.Style = Application.Current.Resources["MineButtonStyle"] as Style;
+                isGameOver = true;
+                isGameWon = false;
+            }
+            else
+            {
+                List<Field> neighbourFields = getNeighbourFields(row, column);
+                int neighbourMines = countNeighbourMines(neighbourFields);
+
+                field.setIsOpened(true);
+                button.Style = Application.Current.Resources["OpenedCellButton"] as Style;
+
+                if (neighbourMines == 0)
+                {
+                    foreach (Field neighbourField in neighbourFields)
+                    {
+                        int x = neighbourField.getX();
+                        int y = neighbourField.getY();
+                        openField(GamePage.ButtonsArray[x, y], x, y);
+                    }
+                }
+                else
+                {
+                    button.Content = neighbourMines.ToString();
+                    return;
+                }
+
+            }
+        }
+
+        /*
+         * Mark field as mine
+         */
+        public void markField(Button button, int row, int column)
+        {
+            Field field = board[row, column];
+
+            if (field.getIsOpened()) return;
+            else if (field.getIsMarked())
+            {
+                field.setIsMarked(false);
+                button.Style = Application.Current.Resources["UnopenedButtonStyle"] as Style;
+                numberOfMines++;
+            }
+            else
+            {
+                field.setIsMarked(true);
+                button.Style = Application.Current.Resources["MarkedButtonStyle"] as Style;
+                numberOfMines--;
+            }
         }
         #endregion
 
@@ -118,6 +199,36 @@ namespace Minesweeper.Logic
             }
 
             populateBoard();
+        }
+        #endregion
+
+        #region Misc
+        /*
+         * Checks if array is contained in 2d array
+         */
+        private bool isContained(int[,] array, int[] item)
+        {
+            bool isContained = false;
+
+            for (int i = 0; i < array.Length / 2; i++)
+            {
+                if (array[i, 0] == item[0] && array[i, 1] == item[1]) isContained = true;
+            }
+
+            return isContained;
+        }
+
+        /*
+         * Creates random nubmer in range [0, number-1]
+         */
+        private int[] getRandomPosition(int number)
+        {
+            int x = random.Next(number);
+            int y = random.Next(number);
+
+            int[] position = { x, y };
+
+            return position;
         }
         #endregion
     }

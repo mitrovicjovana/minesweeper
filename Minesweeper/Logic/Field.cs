@@ -43,6 +43,8 @@ namespace Minesweeper.Logic
         public void setIsMine(bool isMine) { this.isMine = isMine; }
 
         public void setIsOpened(bool isOpened) { this.isOpened = isOpened; }
+
+        public void setIsMarked(bool isMarked) { this.isMarked = isMarked; }
         #endregion
     }
 }

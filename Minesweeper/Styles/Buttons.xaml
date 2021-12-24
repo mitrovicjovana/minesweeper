@@ -2,4 +2,20 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Minesweeper">
 
+    <Style x:Key="UnopenedButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="AntiqueWhite"/>
+    </Style>
+
+    <Style x:Key="OpenedButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Azure"/>
+    </Style>
+
+    <Style x:Key="MineButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Tomato"/>
+    </Style>
+
+    <Style x:Key="MarkedButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="LightPink"/>
+    </Style>
+
 </ResourceDictionary>
