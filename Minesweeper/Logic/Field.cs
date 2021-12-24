@@ -21,6 +21,9 @@ namespace Minesweeper.Logic
         {
             this.x = x;
             this.y = y;
+            this.isMine = isMine;
+            this.isOpened = false;
+            this.isMarked = false;
         }
         #endregion
 

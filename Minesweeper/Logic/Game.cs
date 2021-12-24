@@ -31,7 +31,7 @@ namespace Minesweeper.Logic
         public Field[,] getBoard() { return this.board; }
         #endregion
 
-        #region Misc functions
+        #region Misc
         /*
          * Checks if array is contained in 2d array
          */
@@ -61,7 +61,7 @@ namespace Minesweeper.Logic
         }
         #endregion
 
-        #region Functions to handle board 
+        #region Board 
         /*
          * Returns array of positions for each mine
          */
