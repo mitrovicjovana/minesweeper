@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minesweeper.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,19 @@ namespace Minesweeper
         public MainWindow()
         {
             InitializeComponent();
+            Game game = new Game(10, 10);
+
+            Field[,] board = game.getBoard();
+
+            Console.Write("\n\n");
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    Console.Write(board[i, j].getIsMine() + "  ");
+                    if (j == 9) Console.Write("\n");
+                }
+            }
         }
     }
 }
