@@ -19,6 +19,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <ComboBox Grid.Column="0" x:Name="LevelPicker" Width="80" Height="30" SelectionChanged="LevelPicker_SelectionChanged">
@@ -33,6 +34,8 @@
                 <Button  Content="x" x:Name="CloseButton" PreviewMouseDown="CloseButton_PreviewMouseDown" Height="20" Width="20"/>
                 <Button Content="o" x:Name="RestartButton" PreviewMouseDown="RestartButton_PreviewMouseDown" Height="20" Width="20"/>
             </StackPanel>
+
+            <TextBlock x:Name="StopwatchText"  Grid.Column="3"/>
         </Grid>
 
         <Grid Grid.Row="1" x:Name="BoardGrid"/>

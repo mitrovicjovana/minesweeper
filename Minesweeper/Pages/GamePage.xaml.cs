@@ -1,5 +1,7 @@
 ﻿using Minesweeper.Logic;
 using System;
+using System.Diagnostics;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,9 +16,12 @@ namespace Minesweeper.Pages
         private int numberOfMines;
         private int boardSize;
         private int previousBoardSize = 0;
+        private bool isFirstClick;
 
         private Level level;
         private Game game;
+        private Stopwatch stopwatch;
+        private Timer timer;
         #endregion
 
         #region Constructor
@@ -26,16 +31,48 @@ namespace Minesweeper.Pages
 
             // Select easy level
             LevelPicker.SelectedIndex = 0;
+
+            stopwatch = new Stopwatch();
+            timer = new Timer(1000);
+        }
+        #endregion
+
+        #region Timer
+        /*
+         * Start timer and stopwatch
+         */
+        private void startTime()
+        {
+            timer.Elapsed += OnTimerElapsed;
+
+            stopwatch.Start();
+            timer.Start();
+        }
+
+        /*
+         * Stop timer and stopwatch
+         */
+        private void stopTime()
+        {
+            stopwatch.Stop();
+            timer.Stop();
         }
         #endregion
 
         #region Game
         private void startGame()
         {
+            isFirstClick = false;
+
+            if (stopwatch != null) stopwatch.Reset();
+
             makeBoard();
             makeButtonArray();
+
             game = new Game(numberOfMines, boardSize);
+
             NumberOfMinesText.Text = numberOfMines.ToString();
+            StopwatchText.Text = "00:00";
         }
         #endregion
 
@@ -56,6 +93,8 @@ namespace Minesweeper.Pages
                     button.PreviewMouseLeftButtonDown -= Field_PreviewMouseLeftButtonDown;
                     button.MouseRightButtonDown -= Field_MouseRightButtonDown;
                 }
+
+                stopTime();
             }
 
             // Game won
@@ -237,6 +276,9 @@ namespace Minesweeper.Pages
         */
         private void Field_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!isFirstClick) startTime();
+            isFirstClick = true;
+
             // get position of clicked button
             int[] position = getPosition(BoardGrid);
             int row = position[0];
@@ -253,6 +295,9 @@ namespace Minesweeper.Pages
          */
         private void Field_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!isFirstClick) startTime();
+            isFirstClick = true;
+
             // get position of clicked button
             int[] position = getPosition(BoardGrid);
             int row = position[0];
@@ -287,6 +332,11 @@ namespace Minesweeper.Pages
         private void RestartButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             startGame();
+        }
+
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() => StopwatchText.Text = stopwatch.Elapsed.ToString(@"mm\:ss"));
         }
         #endregion
 
