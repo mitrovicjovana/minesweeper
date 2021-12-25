@@ -36,12 +36,27 @@ namespace Minesweeper.Pages
             makeButtonArray();
             game = new Game(numberOfMines, boardSize);
             NumberOfMinesText.Text = numberOfMines.ToString();
-            /*foreach (Button button in ButtonsArray)
+        }
+        #endregion
+
+        #region GameOver
+        /*
+         * Check for win/loss
+         */
+        private void checkIsGameOver()
+        {
+            game.checkForWin();
+            if (game.getIsGameOver() && !game.getIsGameWon())
             {
-                button.Style = Application.Current.Resources["UnoepenedButtonStyle"] as Style;
-                button.Content = "";
+                game.gameLost();
+                ///NavigationService.Navigate(new LossPage());
             }
-            */
+            else if (game.getIsGameOver() && game.getIsGameWon())
+            {
+                //game.gameOver();
+                // open all closed fields
+                //NavigationService.Navigate(new WinPage());
+            }
         }
         #endregion
 
@@ -214,6 +229,8 @@ namespace Minesweeper.Pages
 
             // logic for opening fields
             game.openField(sender as Button, row, column);
+
+            checkIsGameOver();
         }
 
         /*
@@ -229,6 +246,8 @@ namespace Minesweeper.Pages
             // logic for marking field
             game.markField(sender as Button, row, column);
             NumberOfMinesText.Text = game.getNumberOfMines().ToString();
+
+            checkIsGameOver();
         }
 
         /*
@@ -245,6 +264,14 @@ namespace Minesweeper.Pages
         private void CloseButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        /*
+         * Restart game
+         */
+        private void RestartButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            startGame();
         }
         #endregion
 

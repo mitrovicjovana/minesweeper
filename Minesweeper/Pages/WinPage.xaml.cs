@@ -24,5 +24,10 @@ namespace Minesweeper.Pages
         {
             InitializeComponent();
         }
+
+        private void PlayAgainButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new GamePage());
+        }
     }
 }

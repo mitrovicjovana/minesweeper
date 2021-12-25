@@ -8,7 +8,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="WinPage">
 
-    <Grid>
-        
-    </Grid>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="u won"/>
+        <Button x:Name="PlayAgainButton" Content="play again" PreviewMouseDown="PlayAgainButton_PreviewMouseDown"/>
+    </StackPanel>
 </Page>

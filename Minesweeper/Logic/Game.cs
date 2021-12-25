@@ -38,6 +38,56 @@ namespace Minesweeper.Logic
         public Field[,] getBoard() { return this.board; }
 
         public int getNumberOfMines() { return this.numberOfMines; }
+
+        public bool getIsGameOver() { return isGameOver; }
+
+        public bool getIsGameWon() { return isGameWon; }
+        #endregion
+
+        #region Won/Loss
+        /*
+         * Show all mines
+         */
+        public void gameLost()
+        {
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    Field field = board[i, j];
+                    if (field.getIsMine()) GamePage.ButtonsArray[i, j].Style = Application.Current.Resources["MineButtonStyle"] as Style;
+                }
+            }
+        }
+
+        public void gameWon()
+        {
+
+        }
+
+        /*
+         * Ckeck if any of conditions for win is fulfilled
+         */
+        public void checkForWin()
+        {
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    Field field = board[i, j];
+                    // if all mines are marked:
+                    if ((numberOfMines == 0 && field.getIsMine() && field.getIsMarked()))
+                    {
+                        isGameOver = true;
+                        isGameWon = true;
+                    }
+                }
+            }
+
+            // not all mines are marked, but all cells that are not mines are opened
+            // count unopened cells, if number of mines left is equal, than it-s win
+
+        }
         #endregion
 
         #region Fields
