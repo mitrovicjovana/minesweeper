@@ -45,17 +45,32 @@ namespace Minesweeper.Pages
          */
         private void checkIsGameOver()
         {
-            game.checkForWin();
-            if (game.getIsGameOver() && !game.getIsGameWon())
+            bool isWon = game.checkIsGameWon();
+            bool isLost = game.checkIsGameLost();
+
+            // Remove all event listeners on buttons
+            if (isWon || isLost)
             {
-                game.gameLost();
-                ///NavigationService.Navigate(new LossPage());
+                foreach (Button button in ButtonsArray)
+                {
+                    button.PreviewMouseLeftButtonDown -= Field_PreviewMouseLeftButtonDown;
+                    button.MouseRightButtonDown -= Field_MouseRightButtonDown;
+                }
             }
-            else if (game.getIsGameOver() && game.getIsGameWon())
+
+            // Game won
+            if (isWon)
             {
-                //game.gameOver();
-                // open all closed fields
-                //NavigationService.Navigate(new WinPage());
+                game.openSafeFields();
+                Console.WriteLine("won");
+                // NavigationService.Navigate(new WinPage());
+            }
+            //Game lost
+            else if (isLost)
+            {
+                game.showMines();
+                Console.WriteLine("lost");
+                // NavigationService.Navigate(new LossPage());
             }
         }
         #endregion

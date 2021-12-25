@@ -14,12 +14,10 @@ namespace Minesweeper.Logic
         #region Attributes
         private int numberOfMines;
         private int boardSize;
-        private bool isGameOver;
-        private bool isGameWon;
 
         private Field[,] board;
 
-        Random random = new Random();
+        private Random random = new Random();
         #endregion
 
         #region Constructor
@@ -27,8 +25,6 @@ namespace Minesweeper.Logic
         {
             this.numberOfMines = numberOfMines;
             this.boardSize = boardSize;
-            isGameOver = false;
-            isGameWon = false;
 
             createBoard();
         }
@@ -38,55 +34,91 @@ namespace Minesweeper.Logic
         public Field[,] getBoard() { return this.board; }
 
         public int getNumberOfMines() { return this.numberOfMines; }
-
-        public bool getIsGameOver() { return isGameOver; }
-
-        public bool getIsGameWon() { return isGameWon; }
         #endregion
 
-        #region Won/Loss
+        #region GameOver
         /*
          * Show all mines
          */
-        public void gameLost()
+        public void showMines()
         {
-            for (int i = 0; i < boardSize; i++)
+            for (int row = 0; row < boardSize; row++)
             {
-                for (int j = 0; j < boardSize; j++)
+                for (int column = 0; column < boardSize; column++)
                 {
-                    Field field = board[i, j];
-                    if (field.getIsMine()) GamePage.ButtonsArray[i, j].Style = Application.Current.Resources["MineButtonStyle"] as Style;
+                    Field field = board[row, column];
+                    if (field.getIsMine()) GamePage.ButtonsArray[row, column].Style = Application.Current.Resources["MineButtonStyle"] as Style;
                 }
             }
         }
 
-        public void gameWon()
+        /*
+         * Open all unopened fields, that are not mines
+         */
+        public void openSafeFields()
         {
+            for (int row = 0; row < boardSize; row++)
+            {
+                for (int column = 0; column < boardSize; column++)
+                {
+                    Field field = board[row, column];
+                    Button button = GamePage.ButtonsArray[row, column];
 
+                    if (!field.getIsOpened() && !field.getIsMine())
+                    {
+                        int mines = countNeighbourMines(getNeighbourFields(row, column));
+                        button.Style = Application.Current.Resources["OpenedButtonStyle"] as Style;
+                        button.Content = mines == 0 ? "" : mines.ToString();
+                    }
+                }
+            }
         }
 
         /*
          * Ckeck if any of conditions for win is fulfilled
          */
-        public void checkForWin()
+        public bool checkIsGameWon()
         {
-            for (int i = 0; i < boardSize; i++)
+            bool areAllMinesMarked = true;
+            bool areAllSafeOpened = true;
+
+            for (int row = 0; row < boardSize; row++)
             {
-                for (int j = 0; j < boardSize; j++)
+                for (int column = 0; column < boardSize; column++)
                 {
-                    Field field = board[i, j];
-                    // if all mines are marked:
-                    if ((numberOfMines == 0 && field.getIsMine() && field.getIsMarked()))
-                    {
-                        isGameOver = true;
-                        isGameWon = true;
-                    }
+                    Field field = board[row, column];
+
+                    // All mines are marked
+                    if (field.getIsMine()) areAllMinesMarked = areAllMinesMarked && field.getIsMarked();
+
+                    //All marked are mines
+                    if (field.getIsMarked()) areAllMinesMarked = areAllMinesMarked && field.getIsMine();
+
+                    // All safe fields are opened
+                    if (!field.getIsMine()) areAllSafeOpened = areAllSafeOpened && field.getIsOpened() && false;
                 }
             }
 
-            // not all mines are marked, but all cells that are not mines are opened
-            // count unopened cells, if number of mines left is equal, than it-s win
+            return areAllMinesMarked || areAllSafeOpened;
+        }
 
+        /*
+         * Check if condition for loss is fulfilled
+         */
+        public bool checkIsGameLost()
+        {
+            bool isLost = false;
+
+            for (int row = 0; row < boardSize; row++)
+            {
+                for (int column = 0; column < boardSize; column++)
+                {
+                    Field field = board[row, column];
+                    if (field.getIsOpened() && field.getIsMine()) isLost = true;
+                }
+            }
+
+            return isLost;
         }
         #endregion
 
@@ -137,11 +169,11 @@ namespace Minesweeper.Logic
         {
             Field field = board[row, column];
             if (field.getIsOpened()) return;
+            else if (field.getIsMarked()) return;
             else if (field.getIsMine())
             {
+                field.setIsOpened(true);
                 button.Style = Application.Current.Resources["MineButtonStyle"] as Style;
-                isGameOver = true;
-                isGameWon = false;
             }
             else
             {
@@ -149,7 +181,7 @@ namespace Minesweeper.Logic
                 int neighbourMines = countNeighbourMines(neighbourFields);
 
                 field.setIsOpened(true);
-                button.Style = Application.Current.Resources["OpenedCellButton"] as Style;
+                button.Style = Application.Current.Resources["OpenedButtonStyle"] as Style;
 
                 if (neighbourMines == 0)
                 {
