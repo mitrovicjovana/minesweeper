@@ -1,8 +1,6 @@
 ﻿using Minesweeper.Pages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -97,7 +95,7 @@ namespace Minesweeper.Logic
                     if (field.getIsMarked()) areAllMinesMarked = areAllMinesMarked && field.getIsMine();
 
                     // All safe fields are opened
-                    if (!field.getIsMine()) areAllSafeOpened = areAllSafeOpened && field.getIsOpened() && false;
+                    if (!field.getIsMine()) areAllSafeOpened = areAllSafeOpened && field.getIsOpened();
                 }
             }
 
@@ -170,7 +168,11 @@ namespace Minesweeper.Logic
         public void openField(Button button, int row, int column)
         {
             Field field = board[row, column];
-            if (field.getIsOpened()) return;
+            if (field.getIsOpened())
+            {
+                button.Style = Application.Current.Resources["OpenedButtonStyle"] as Style;
+                return;
+            }
             else if (field.getIsMarked()) return;
             else if (field.getIsMine())
             {

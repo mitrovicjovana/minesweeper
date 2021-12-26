@@ -32,7 +32,6 @@
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Button  Content="x" x:Name="CloseButton" PreviewMouseDown="CloseButton_PreviewMouseDown" Height="20" Width="20"/>
-                <Button Content="o" x:Name="RestartButton" PreviewMouseDown="RestartButton_PreviewMouseDown" Height="20" Width="20"/>
             </StackPanel>
 
             <TextBlock x:Name="StopwatchText"  Grid.Column="3"/>

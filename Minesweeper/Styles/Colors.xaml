@@ -2,4 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Minesweeper">
 
+    <Color x:Key="FontPrimaryColor">#303030</Color>
+    <SolidColorBrush x:Key="FontPrimaryBrush" Color="{StaticResource FontPrimaryColor}"/>
+
+    <Color x:Key="PrimaryColor">#f1faee</Color>
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+
+    <Color x:Key="PrimaryDarkerColor">#d9d9d9</Color>
+    <SolidColorBrush x:Key="PrimaryDarkerBrush" Color="{StaticResource PrimaryDarkerColor}"/>
+
+    <Color x:Key="PrimaryDarkColor">#a5a0a7</Color>
+    <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"/>
+
 </ResourceDictionary>
