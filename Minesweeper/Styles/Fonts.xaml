@@ -2,4 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Minesweeper">
 
+    <FontFamily x:Key="LatoThin">pack://application;,,,/Fonts/Lato/#Lato Hairline</FontFamily>
+    <FontFamily x:Key="LatoLight">pack://application;,,,/Fonts/Lato/#Lato Light</FontFamily>
+    <FontFamily x:Key="LatoRegular">pack://application;,,,/Fonts/Lato/#Lato</FontFamily>
+    <FontFamily x:Key="LatoBlack">pack://application;,,,/Fonts/Lato/#Lato Black</FontFamily>
+
 </ResourceDictionary>
