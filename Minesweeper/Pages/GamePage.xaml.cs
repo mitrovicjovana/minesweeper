@@ -1,6 +1,6 @@
 ﻿using Minesweeper.Logic;
-using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,7 +43,7 @@ namespace Minesweeper.Pages
          */
         private void startTime()
         {
-            timer.Elapsed += OnTimerElapsed;
+            timer.Elapsed += GameTimer_OnTimerElapsed;
 
             stopwatch.Start();
             timer.Start();
@@ -80,7 +80,7 @@ namespace Minesweeper.Pages
         /*
          * Check for win/loss
          */
-        private void checkIsGameOver()
+        private async void checkIsGameOver()
         {
             bool isWon = game.checkIsGameWon();
             bool isLost = game.checkIsGameLost();
@@ -101,17 +101,18 @@ namespace Minesweeper.Pages
             if (isWon)
             {
                 game.openSafeFields();
-                Console.WriteLine("won");
-                // NavigationService.Navigate(new WinPage());
+                await Task.Delay(boardSize / 12 * 1000);
+                NavigationService.Navigate(new WinPage());
             }
             //Game lost
             else if (isLost)
             {
                 game.showMines();
-                Console.WriteLine("lost");
-                // NavigationService.Navigate(new LossPage());
+                await Task.Delay(boardSize / 3 * 1000);
+                NavigationService.Navigate(new LossPage());
             }
         }
+
         #endregion
 
         #region Fields
@@ -334,7 +335,7 @@ namespace Minesweeper.Pages
             startGame();
         }
 
-        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        private void GameTimer_OnTimerElapsed(object sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() => StopwatchText.Text = stopwatch.Elapsed.ToString(@"mm\:ss"));
         }

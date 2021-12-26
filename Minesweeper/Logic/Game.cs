@@ -40,7 +40,7 @@ namespace Minesweeper.Logic
         /*
          * Show all mines
          */
-        public void showMines()
+        public async void showMines()
         {
             for (int row = 0; row < boardSize; row++)
             {
@@ -48,6 +48,7 @@ namespace Minesweeper.Logic
                 {
                     Field field = board[row, column];
                     if (field.getIsMine()) GamePage.ButtonsArray[row, column].Style = Application.Current.Resources["MineButtonStyle"] as Style;
+                    await Task.Delay(10);
                 }
             }
         }
@@ -55,7 +56,7 @@ namespace Minesweeper.Logic
         /*
          * Open all unopened fields, that are not mines
          */
-        public void openSafeFields()
+        public async void openSafeFields()
         {
             for (int row = 0; row < boardSize; row++)
             {
@@ -69,6 +70,7 @@ namespace Minesweeper.Logic
                         int mines = countNeighbourMines(getNeighbourFields(row, column));
                         button.Style = Application.Current.Resources["OpenedButtonStyle"] as Style;
                         button.Content = mines == 0 ? "" : mines.ToString();
+                        await Task.Delay(10);
                     }
                 }
             }
