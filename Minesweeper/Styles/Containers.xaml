@@ -2,4 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Minesweeper">
 
+    <Style x:Key="RoundCornersContainer" TargetType="Border">
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Background" Value="{DynamicResource PrimaryDarkerBrush}"/>
+    </Style>
 </ResourceDictionary>

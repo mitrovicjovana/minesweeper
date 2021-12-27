@@ -8,35 +8,46 @@
       d:DesignHeight="450" d:DesignWidth="400"
       Title="GamePage">
 
-    <Grid Background="AntiqueWhite">
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" HorizontalAlignment="Right">
+            <Button x:Name="CloseButton" PreviewMouseDown="CloseButton_PreviewMouseDown" Style="{StaticResource CloseButtonStyle}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <ComboBox Grid.Column="0" x:Name="LevelPicker" Width="80" Height="30" SelectionChanged="LevelPicker_SelectionChanged">
+            <ComboBox Grid.Column="0" x:Name="LevelPicker" Style="{DynamicResource LevelsComboBoxStyle}" SelectionChanged="LevelPicker_SelectionChanged">
                 <ComboBoxItem>Easy</ComboBoxItem>
-                <ComboBoxItem>Meduim</ComboBoxItem>
+                <ComboBoxItem>Medium</ComboBoxItem>
                 <ComboBoxItem>Hard</ComboBoxItem>
             </ComboBox>
 
-            <TextBlock Grid.Column="1" x:Name="NumberOfMinesText"/>
+            <Border Style="{StaticResource RoundCornersContainer}" Grid.Column="1" Height="30" Width="60">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/flag.png" Height="18"/>
+                    <TextBlock x:Name="NumberOfMinesText" Style="{DynamicResource NumbersText}"/>
+                </StackPanel>
+            </Border>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button  Content="x" x:Name="CloseButton" PreviewMouseDown="CloseButton_PreviewMouseDown" Height="20" Width="20"/>
-            </StackPanel>
+            <Border Style="{StaticResource RoundCornersContainer}" Grid.Column="2" Height="30" Width="70">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/timer.png" Height="18"/>
+                    <TextBlock x:Name="StopwatchText"  Grid.Column="3" Style="{DynamicResource NumbersText}"/>
+                </StackPanel>
+            </Border>
 
-            <TextBlock x:Name="StopwatchText"  Grid.Column="3"/>
         </Grid>
 
-        <Grid Grid.Row="1" x:Name="BoardGrid"/>
+        <Grid Grid.Row="2" x:Name="BoardGrid"/>
     </Grid>
 </Page>

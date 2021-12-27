@@ -1,5 +1,6 @@
 ﻿using Minesweeper.Pages;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Minesweeper
 {
@@ -12,6 +13,13 @@ namespace Minesweeper
         {
             InitializeComponent();
             Navigator.Navigate(new GamePage());
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            this.DragMove();
         }
     }
 }

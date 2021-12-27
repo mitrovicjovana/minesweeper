@@ -89,6 +89,8 @@ namespace Minesweeper.Pages
             // Remove all event listeners on buttons
             if (isWon || isLost)
             {
+                LevelPicker.SelectionChanged -= LevelPicker_SelectionChanged;
+
                 foreach (Button button in ButtonsArray)
                 {
                     button.PreviewMouseLeftButtonDown -= Field_PreviewMouseLeftButtonDown;

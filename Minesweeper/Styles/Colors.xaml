@@ -14,4 +14,7 @@
     <Color x:Key="PrimaryDarkColor">#a5a0a7</Color>
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"/>
 
+    <Color x:Key="AccentColor">#e63946</Color>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+
 </ResourceDictionary>

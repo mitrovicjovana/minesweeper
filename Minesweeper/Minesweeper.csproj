@@ -150,13 +150,19 @@
   <ItemGroup>
     <Resource Include="Images\flag.png" />
     <Resource Include="Images\stopwatch.png" />
-    <Resource Include="Images\timerpng.png" />
+    <Resource Include="Images\timer.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\Lato\OFL.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\mine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\arrow-down.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

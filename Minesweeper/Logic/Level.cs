@@ -39,8 +39,8 @@ namespace Minesweeper.Logic
         public void changeWindowsSize()
         {
             // Windows size
-            Application.Current.MainWindow.Width = fieldSize * boardSize;
-            Application.Current.MainWindow.Height = fieldSize * boardSize + 60;
+            Application.Current.MainWindow.Width = boardSize * fieldSize;
+            Application.Current.MainWindow.Height = boardSize * fieldSize + 90;
         }
 
     }
