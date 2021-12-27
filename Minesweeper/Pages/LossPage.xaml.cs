@@ -29,5 +29,10 @@ namespace Minesweeper.Pages
         {
             NavigationService.Navigate(new GamePage());
         }
+
+        private void CloseButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

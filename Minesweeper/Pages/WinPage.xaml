@@ -8,8 +8,19 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="WinPage">
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="u won"/>
-        <Button x:Name="PlayAgainButton" Content="play again" PreviewMouseDown="PlayAgainButton_PreviewMouseDown"/>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Right">
+            <Button x:Name="CloseButton" PreviewMouseDown="CloseButton_PreviewMouseDown" Style="{StaticResource CloseButtonStyle}"/>
+        </Grid>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+            <TextBlock Text="GAME OVER" Style="{DynamicResource GameOverText}"/>
+            <TextBlock Text="You won!" Style="{DynamicResource Text}"/>
+            <Button x:Name="PlayAgainButton" Content="Play again" PreviewMouseDown="PlayAgainButton_PreviewMouseDown" Style="{DynamicResource PlayAgainButtonStyle}"/>
+        </StackPanel>
+    </Grid>
 </Page>
